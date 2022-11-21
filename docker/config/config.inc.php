@@ -22,9 +22,9 @@ class Z_CONFIG {
 	public static $AWS_ACCESS_KEY = 'zotero'; // leave credentials empty to use IAM role
 	public static $AWS_SECRET_KEY = 'zoterodocker';
 	public static $S3_ENDPOINT = 'localhost:8082';
-	public static $S3_BUCKET = 'zotero';
+	public static $S3_BUCKET = 's3-zotero';
 	public static $S3_BUCKET_CACHE = '';
-	public static $S3_BUCKET_FULLTEXT = 'zotero-fulltext';
+	public static $S3_BUCKET_FULLTEXT = 's3-zotero-fulltext';
 	public static $SNS_ALERT_TOPIC = '';
 
 	public static $REDIS_HOSTS = [
