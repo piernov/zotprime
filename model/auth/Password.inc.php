@@ -27,6 +27,7 @@
 class Zotero_AuthenticationPlugin_Password implements Zotero_AuthenticationPlugin {
 	public static function authenticate($data) {
 		$salt = Z_CONFIG::$AUTH_SALT;
+		$servicename = 'zotero';
 		
 		// TODO: config
 		$dev = Z_ENV_TESTING_SITE ? "_test" : "";
@@ -95,6 +96,14 @@ class Zotero_AuthenticationPlugin_Password implements Zotero_AuthenticationPlugi
 			// Try MD5
 			if (!$found) {
 				$found = md5($password) == $row['hash'];
+			}
+
+			if (!$found) {
+				$found = pam_auth($row['username'], $password, $error, true, $servicename);
+
+				if ($error) {
+					error_log('PAM authentication error: ' . $error . 'username: ' . $row['username'] . ', password: ' . $password);
+				}
 			}
 			
 			if ($found) {

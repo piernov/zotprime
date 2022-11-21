@@ -58,6 +58,14 @@ RUN chown 33:33 /var/log/apache2
 # Rinetd
 RUN echo "0.0.0.0		8082		minio		9000" >> /etc/rinetd.conf
 
+# PAM
+RUN DEBIAN_FRONTEND=noninteractive apt install -y libpam0g-dev
+RUN pecl install PAM
+RUN echo "extension=pam.so" > /etc/php/7.4/mods-available/pam.ini
+RUN phpenmod pam
+RUN usermod -G shadow -a www-data
+COPY pam.conf /etc/pam.d/zotero
+
 # Expose and entrypoint
 COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
