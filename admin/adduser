@@ -1,0 +1,36 @@
+#!/usr/bin/env php
+<?php
+
+set_include_path("../include");
+require("header.inc.php");
+
+if (empty($argv[3])) {
+        echo "Usage: $argv[0] [-f|--force] <username> <password> <email>\n";
+        exit(1);
+}
+
+$username = $argv[1];
+$password = $argv[2];
+$email = $argv[3];
+
+// Add user to WWW database
+$sql = "INSERT INTO users (username, password) VALUES (?, MD5(?))";
+$userID = Zotero_WWW_DB_1::query($sql, array($username, $password));
+
+// Add user email address to WWW database
+$sql = "INSERT INTO users_email (userID, email) VALUES (?, ?)";
+Zotero_WWW_DB_1::query($sql, array($userID, $email));
+
+// Create user and user library in master database from WWW database
+Zotero_Users::addFromWWW($userID);
+
+// Lookup 'shared' group
+$group_name = 'shared';
+$sql = "SELECT groupID FROM `groups` WHERE slug=?";
+$groupID = Zotero_DB::valueQuery($sql, [$group_name]);
+$group = Zotero_Groups::get($groupID);
+
+// Add user to 'shared' group
+$group->addUser($userID, 'member');
+
+?>
