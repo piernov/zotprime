@@ -40,6 +40,8 @@ services:
       - "./config/config.inc.php:/var/www/zotero/include/config/config.inc.php:ro"
       - "./config/dbconnect.inc.php:/var/www/zotero/include/config/dbconnect.inc.php:ro"
       - "./config/default.js:/var/www/zotero/stream-server/config/default.js:ro"
+      - "/var/lib/sss/pipes/:/var/lib/sss/pipes/:rw"
+      - "/var/lib/sss/mc/:/var/lib/sss/mc/:ro"
     environment:
       - RUN_USER=www-data
       - RUN_GROUP=www-data

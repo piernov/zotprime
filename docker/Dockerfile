@@ -66,6 +66,9 @@ RUN phpenmod pam
 RUN usermod -G shadow -a www-data
 COPY pam.conf /etc/pam.d/zotero
 
+# SSSD
+RUN DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends libnss-sss libpam-sss
+
 # Expose and entrypoint
 COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
