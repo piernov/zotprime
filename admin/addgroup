@@ -1,0 +1,45 @@
+#!/usr/bin/env php
+<?php
+
+set_include_path("../include");
+require("header.inc.php");
+
+if (empty($argv[2])) {
+        echo "Usage: $argv[0] <groupname> <ownerusername>\n";
+        exit(1);
+}
+
+$groupname = $argv[1];
+$ownerusername = $argv[2];
+
+// Check if group already exists
+$groupslug = Zotero_Utilities::slugify($groupname);
+$sql = "SELECT COUNT(*) FROM `groups` WHERE slug=?";
+$count = Zotero_DB::valueQuery($sql, [$groupslug]);
+if ($count > 0) {
+	echo "Group slug " . $groupslug. " already exists.\n";
+	exit(2);
+}
+
+// Lookup userID for ownerusername
+$sql = "SELECT userID FROM `users` WHERE username=?";
+$ownerUserID = Zotero_DB::valueQuery($sql, [$ownerusername]);
+if (empty($ownerUserID)) {
+	echo "User " . $ownerusername . " not found.\n";
+	exit(3);
+}
+
+$group = new Zotero_Group;
+//$group->libraryID; // Library will be created automatically
+$group->ownerUserID = $ownerUserID;
+$group->name = $argv[1];
+$group->type = 'Private';
+$group->libraryEditing = 'members'; // All members can edit library
+$group->libraryReading = 'members'; // Only members can read library
+$group->fileEditing = 'members'; // All members can edit files
+//$group->description = ''; // We don't need description
+//$group->url = ''; // We don't need URL
+
+$group->save();
+
+?>

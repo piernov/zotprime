@@ -1,0 +1,35 @@
+#!/usr/bin/env php
+<?php
+
+set_include_path("../include");
+require("header.inc.php");
+
+if (empty($argv[2])) {
+        echo "Usage: $argv[0] <username> <groupname>\n";
+        exit(1);
+}
+
+$username = $argv[1];
+$groupname = $argv[2];
+$role = "member";
+
+// Lookup group
+$sql = "SELECT groupID FROM `groups` WHERE name=?";
+$groupID = Zotero_DB::valueQuery($sql, [$groupname]);
+if (empty($groupID)) {
+	echo "Group " . $groupname . " not found.\n";
+	exit(3);
+}
+$group = Zotero_Groups::get($groupID);
+
+// Lookup userID for username
+$sql = "SELECT userID FROM `users` WHERE username=?";
+$userID = Zotero_DB::valueQuery($sql, [$username]);
+if (empty($userID)) {
+	echo "User " . $username . " not found.\n";
+	exit(3);
+}
+
+$group->addUser($userID, $role);
+
+?>
