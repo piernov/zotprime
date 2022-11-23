@@ -34,7 +34,7 @@ echo "INSERT INTO groupUsers VALUES (1, 1, 'owner', '0000-00-00 00:00:00', '0000
 # Load in www schema
 $MYSQL zotero_www < www.sql
 
-echo "INSERT INTO users VALUES (1, 'admin', MD5('admin'))" | $MYSQL zotero_www
+echo "INSERT INTO users VALUES (1, 'admin', MD5('admin'), 'member')" | $MYSQL zotero_www
 echo "INSERT INTO users_email (userID, email) VALUES (1, 'admin@zotero.org')" | $MYSQL zotero_www
 echo "INSERT INTO storage_institutions (institutionID, domain, storageQuota) VALUES (1, 'zotero.org', 10000)" | $MYSQL zotero_www
 echo "INSERT INTO storage_institution_email (institutionID, email) VALUES (1, 'contact@zotero.org')" | $MYSQL zotero_www
