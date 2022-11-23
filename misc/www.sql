@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `LUM_User` (
 CREATE TABLE IF NOT EXISTS `storage_institutions` (
   `institutionID` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
   `domain` varchar(100) NOT NULL,
-  `domainBlacklist` text,
+  `domainBlacklist` text NOT NULL DEFAULT '',
   `storageQuota` int(11) NOT NULL,
   PRIMARY KEY (`institutionID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
