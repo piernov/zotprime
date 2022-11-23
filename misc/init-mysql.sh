@@ -51,3 +51,5 @@ echo "INSERT INTO shardLibraries VALUES (2, 'group', 0, 0)" | $MYSQL zotero_shar
 # Load in schema on id servers
 $MYSQL zotero_ids < ids.sql
 
+# Update item storage schema with schema.json
+../admin/schema_update

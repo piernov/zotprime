@@ -5,6 +5,8 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     environment:
       - MYSQL_ROOT_PASSWORD=zotero
+    volumes:
+      - db_data:/var/lib/mysql
   db-zotero-elasticsearch:
    image: docker.elastic.co/elasticsearch/elasticsearch:5.3.0
    environment:
@@ -25,6 +27,8 @@ services:
     environment:
       - MINIO_ACCESS_KEY=zotero
       - MINIO_SECRET_KEY=zoterodocker
+    volumes:
+      - minio_data:/data
     command: server /data
   app-zotero:
     image: app-zotero
@@ -66,3 +70,6 @@ services:
       - PMA_HOST=mysql
     links:
       - db-zotero-mysql:mysql
+volumes:
+  db_data: {}
+  minio_data: {}

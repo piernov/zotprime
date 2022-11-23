@@ -5,7 +5,7 @@ set_include_path("../include");
 require("header.inc.php");
 
 if (empty($argv[3])) {
-        echo "Usage: $argv[0] [-f|--force] <username> <password> <email>\n";
+        echo "Usage: $argv[0] <username> <password> <email>\n";
         exit(1);
 }
 
